@@ -306,6 +306,11 @@ void MainWindow::exportDictionary() {
     );
     
     if (!filePath.isEmpty()) {
+        // Ensure file path ends with .json extension
+        if (!filePath.endsWith(".json", Qt::CaseInsensitive)) {
+            filePath += ".json";
+        }
+        
         if (dictionary->exportToJson(filePath)) {
             QMessageBox::information(this, "Экспорт успешен", 
                 "Словарь успешно экспортирован в " + filePath);
@@ -409,15 +414,21 @@ void MainWindow::setCurrentFile(const QString &filePath) {
 }
 
 bool MainWindow::saveFile(const QString &filePath) {
-    if (dictionary->exportToJson(filePath)) {
-        setCurrentFile(filePath);
+    // Ensure file path ends with .json extension
+    QString actualFilePath = filePath;
+    if (!actualFilePath.endsWith(".json", Qt::CaseInsensitive)) {
+        actualFilePath += ".json";
+    }
+    
+    if (dictionary->exportToJson(actualFilePath)) {
+        setCurrentFile(actualFilePath);
         setModified(false);
-        ui->statusBar->showMessage(QString("Словарь сохранен в %1").arg(filePath), 3000);
+        ui->statusBar->showMessage(QString("Словарь сохранен в %1").arg(actualFilePath), 3000);
         return true;
     }
     
     QMessageBox::warning(this, "Ошибка сохранения",
-                        QString("Не удалось сохранить словарь в файл %1").arg(filePath));
+                        QString("Не удалось сохранить словарь в файл %1").arg(actualFilePath));
     return false;
 }
 
@@ -487,6 +498,7 @@ void MainWindow::onAutoSaveNow() {
                                   .arg(appSettings->autoSaveLocation())
                                   .arg(timestamp);
         
+        // Here, the .json extension is already included in the path string
         if (saveFile(autoSavePath)) {
             ui->statusBar->showMessage(QString("Автосохранение в %1").arg(autoSavePath), 5000);
         }
@@ -524,6 +536,7 @@ bool MainWindow::saveAsDictionary() {
     );
     
     if (!filePath.isEmpty()) {
+        // No need to add extension here since saveFile will handle it
         return saveFile(filePath);
     }
     return false;
