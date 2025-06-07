@@ -1,5 +1,3 @@
-/* Темная тема - Полное изменение всех элементов виджетов */
-
 * {
     color: #e0e0e0;
     background-color: #121212;
@@ -8,7 +6,6 @@
     outline: none;
 }
 
-/* Базовый стиль виджетов */
 QWidget {
     background-color: #121212;
     color: #e0e0e0;
@@ -20,7 +17,6 @@ QMainWindow, QDialog {
     color: #e0e0e0;
 }
 
-/* Улучшение внешнего вида заголовка диалога */
 QDialog {
     background-color: #121212;
     color: #e0e0e0;
@@ -35,14 +31,12 @@ QDialog::title {
     padding: 5px;
 }
 
-/* Dialog title - platform specific */
 QDialog QTitleBar {
     background-color: #1a1a1a;
     color: #e0e0e0;
     padding: 5px;
 }
 
-/* Specific fix for AddEditDialog */
 QDialog#AddEditDialog {
     background-color: #121212;
     color: #e0e0e0;
@@ -83,14 +77,12 @@ QDialog#AddEditDialog QDialogButtonBox QPushButton:pressed {
     background-color: #1565c0;
 }
 
-/* Ensure SettingsDialog also has proper styling */
 QDialog#SettingsDialog {
     background-color: #121212;
     color: #e0e0e0;
     border: 2px solid #353535;
 }
 
-/* Frame and container styling */
 QFrame {
     background-color: #121212;
     color: #e0e0e0;
@@ -114,7 +106,6 @@ QSplitter::handle:vertical {
     height: 4px;
 }
 
-/* List, Tree and Table widgets */
 QAbstractItemView {
     background-color: #1e1e1e;
     color: #e0e0e0;
@@ -160,7 +151,6 @@ QHeaderView::section {
     border: 1px solid #353535;
 }
 
-/* Text editors and line edits */
 QTextEdit, QPlainTextEdit {
     background-color: #1e1e1e;
     color: #e0e0e0;
@@ -177,7 +167,6 @@ QLineEdit {
     padding: 5px;
 }
 
-/* Buttons */
 QPushButton {
     background-color: #1976d2;
     color: white;
@@ -200,7 +189,6 @@ QPushButton:disabled {
     color: #757575;
 }
 
-/* Toolbar */
 QToolBar {
     background-color: #121212;
     border: 1px solid #252525;
@@ -223,7 +211,6 @@ QToolButton:pressed, QToolButton:checked {
     background-color: #1976d2;
 }
 
-/* Menu and Status bar */
 QMenuBar {
     background-color: #121212;
     color: #e0e0e0;
@@ -288,7 +275,6 @@ QStatusBar QLabel {
     color: #e0e0e0;
 }
 
-/* Tab widgets */
 QTabWidget {
     background-color: #121212;
     color: #e0e0e0;
@@ -320,7 +306,6 @@ QTabBar::tab:!selected {
     margin-top: 2px;
 }
 
-/* Checkbox and Radio Buttons */
 QCheckBox, QRadioButton {
     background-color: transparent;
     color: #e0e0e0;
@@ -352,7 +337,6 @@ QRadioButton::indicator:checked {
     border-color: #1976d2;
 }
 
-/* Combo box and Spin box */
 QComboBox {
     background-color: #1e1e1e;
     color: #e0e0e0;
@@ -409,7 +393,6 @@ QSpinBox::down-button, QDoubleSpinBox::down-button {
     border-top: 1px solid #353535;
 }
 
-/* Group box */
 QGroupBox {
     background-color: #121212;
     color: #e0e0e0;
@@ -428,13 +411,11 @@ QGroupBox::title {
     color: #e0e0e0;
 }
 
-/* Labels */
 QLabel {
     background-color: transparent;
     color: #e0e0e0;
 }
 
-/* Scroll bars */
 QScrollBar:horizontal {
     background-color: #1e1e1e;
     height: 12px;
@@ -475,7 +456,6 @@ QScrollBar::add-page, QScrollBar::sub-page {
     background: none;
 }
 
-/* Tool tips */
 QToolTip {
     background-color: #252525;
     color: #e0e0e0;
@@ -485,7 +465,6 @@ QToolTip {
     opacity: 230;
 }
 
-/* Progress bar */
 QProgressBar {
     border: 1px solid #353535;
     border-radius: 4px;
@@ -500,7 +479,6 @@ QProgressBar::chunk {
     margin: 0.5px;
 }
 
-/* Dialog button box */
 QDialogButtonBox {
     button-layout: 3;
 }
@@ -509,7 +487,6 @@ QDialogButtonBox QPushButton {
     min-width: 80px;
 }
 
-/* Message Box */
 QMessageBox {
     background-color: #121212;
     color: #e0e0e0;
@@ -519,25 +496,21 @@ QMessageBox QLabel {
     color: #e0e0e0;
 }
 
-/* Line separators */
-QFrame[frameShape="4"], /* QFrame::HLine */
-QFrame[frameShape="5"] /* QFrame::VLine */ {
+QFrame[frameShape="4"],
+QFrame[frameShape="5"] {
     background-color: #353535;
     border: none;
 }
 
-/* Title bar - this is platform dependent */
 .QMainWindow {
     qproperty-windowTitle: "Dictionary Application";
 }
 
-/* Fix text color in HTML-rendered content */
 QTextBrowser {
     background-color: #1e1e1e;
     color: #e0e0e0;
 }
 
-/* Make sure results display has correct styling */
 QTextEdit#resultDisplay {
     background-color: #1e1e1e;
     color: #e0e0e0;
@@ -557,9 +530,6 @@ QTextEdit#resultDisplay b {
     color: #e0e0e0;
 }
 
-/* More complete dark theme styling */
-
-/* Fix text fields and top bar to match dark theme */
 QMenuBar {
     background-color: #121212;
     color: #e0e0e0;
@@ -609,59 +579,49 @@ QLineEdit#wordInput, QLineEdit#synonymsInput, QLineEdit#antonymsInput {
     border: 1px solid #353535;
 }
 
-/* Fix for title bar in all operating systems */
 QMainWindow::title {
     background-color: #121212;
     color: #e0e0e0;
 }
 
-/* Force all text fields to use dark theme colors */
 QTextEdit, QPlainTextEdit, QLineEdit {
     background-color: #1e1e1e !important;
     color: #e0e0e0 !important;
     border-color: #353535 !important;
 }
 
-/* Fix for system menu bar in some desktops */
 QMenuBar QMenu {
     background-color: #1e1e1e;
     color: #e0e0e0;
     border: 1px solid #353535;
 }
 
-/* Title bar styling specific to the application */
 QMainWindow::titleBar {
     background-color: #121212;
     color: #e0e0e0;
 }
 
-/* Override any system-specific styling */
 QWidget#qt_scrollarea_viewport {
     background-color: #1e1e1e;
 }
 
-/* Force transparent backgrounds in HTML content */
 QTextEdit#resultDisplay {
     background-color: #1e1e1e;
 }
 
-/* Remove any white backgrounds from child elements */
 QWidget * {
     background-color: inherit;
 }
 
-/* !important overrides for critical elements */
 * {
     color: #e0e0e0;
 }
 
-/* Specifically target QTextEdit children */
 QTextEdit QWidget {
     background-color: transparent !important;
     color: #e0e0e0;
 }
 
-/* For result display, ensure content is properly styled */
 QTextEdit#resultDisplay h1, QTextEdit#resultDisplay h2, QTextEdit#resultDisplay h3,
 QTextEdit#resultDisplay h4, QTextEdit#resultDisplay h5, QTextEdit#resultDisplay h6 {
     color: #64b5f6 !important;
@@ -678,7 +638,6 @@ QTextEdit#resultDisplay a {
     background-color: transparent !important;
 }
 
-/* Top toolbar must be dark */
 QToolBar {
     background-color: #121212;
     color: #e0e0e0;

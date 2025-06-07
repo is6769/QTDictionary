@@ -11,11 +11,9 @@ SettingsDialog::SettingsDialog(Settings *settings, QWidget *parent) :
 {
     ui->setupUi(this);
     
-    // Setup theme dropdown
     ui->themeComboBox->addItem("Light", "light");
     ui->themeComboBox->addItem("Dark", "dark");
     
-    // Connect signals
     connect(ui->fontButton, &QPushButton::clicked, this, &SettingsDialog::onSelectFont);
     connect(ui->autoSaveCheckBox, &QCheckBox::toggled, this, &SettingsDialog::onAutoSaveToggled);
     connect(ui->locationButton, &QPushButton::clicked, this, &SettingsDialog::onSelectAutoSaveLocation);
@@ -23,7 +21,6 @@ SettingsDialog::SettingsDialog(Settings *settings, QWidget *parent) :
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &SettingsDialog::onAccepted);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &SettingsDialog::onRejected);
     
-    // Load settings
     loadCurrentSettings();
 }
 
@@ -32,21 +29,18 @@ SettingsDialog::~SettingsDialog() {
 }
 
 void SettingsDialog::loadCurrentSettings() {
-    // Font settings
     selectedFont = appSettings->getFont();
     updateFontPreview();
     
-    // Theme settings
     QString theme = appSettings->getTheme();
     int themeIndex = ui->themeComboBox->findData(theme);
     if (themeIndex >= 0) {
         ui->themeComboBox->setCurrentIndex(themeIndex);
     } else {
-        ui->themeComboBox->setCurrentIndex(0); // Default to light
+        ui->themeComboBox->setCurrentIndex(0);
     }
     selectedTheme = theme;
     
-    // Auto-save settings
     autoSaveEnabled = appSettings->autoSaveEnabled();
     autoSaveInterval = appSettings->autoSaveInterval();
     autoSaveLocation = appSettings->autoSaveLocation();
@@ -59,7 +53,6 @@ void SettingsDialog::loadCurrentSettings() {
     ui->locationLineEdit->setEnabled(autoSaveEnabled);
     ui->locationButton->setEnabled(autoSaveEnabled);
     
-    // Other settings
     confirmDeletion = appSettings->confirmDeletion();
     caseSensitiveSearch = appSettings->caseSensitiveSearch();
     maxRecentFiles = appSettings->maxRecentFiles();
@@ -105,23 +98,21 @@ void SettingsDialog::onThemeChanged(int index) {
 }
 
 void SettingsDialog::onAccepted() {
-    // Apply font settings
     appSettings->setFont(selectedFont);
     
-    // Apply theme settings
+    
     appSettings->setTheme(selectedTheme);
     
-    // Apply auto-save settings
+    
     appSettings->setAutoSaveEnabled(autoSaveEnabled);
     appSettings->setAutoSaveInterval(ui->intervalSpinBox->value());
     appSettings->setAutoSaveLocation(autoSaveLocation);
     
-    // Apply other settings
+    
     appSettings->setConfirmDeletion(ui->confirmDeleteCheckBox->isChecked());
     appSettings->setCaseSensitiveSearch(ui->caseSensitiveCheckBox->isChecked());
     appSettings->setMaxRecentFiles(ui->recentSpinBox->value());
     
-    // Save settings
     appSettings->saveSettings();
     
     accept();

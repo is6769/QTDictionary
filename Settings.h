@@ -15,15 +15,12 @@ public:
     explicit Settings(QObject *parent = nullptr);
     ~Settings();
 
-    // Theme settings
     QString getTheme() const;
     void setTheme(const QString &theme);
 
-    // Font settings
     QFont getFont() const;
     void setFont(const QFont &font);
 
-    // Auto-save settings
     bool autoSaveEnabled() const;
     void setAutoSaveEnabled(bool enabled);
     
@@ -33,7 +30,6 @@ public:
     QString autoSaveLocation() const;
     void setAutoSaveLocation(const QString &location);
 
-    // Other settings
     bool confirmDeletion() const;
     void setConfirmDeletion(bool confirm);
     
@@ -47,11 +43,9 @@ public:
     void addRecentFile(const QString &filePath);
     void clearRecentFiles();
 
-    // Load/save settings
     void loadSettings();
     void saveSettings();
     
-    // Apply theme
     void applyTheme();
 
 signals:

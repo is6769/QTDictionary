@@ -25,12 +25,15 @@ public:
     
     void addExample(QString example);
     QList<QString> getExamples() const;
+    void clearExamples(); 
     
     void addSynonym(QString synonym);
     QStringList getSynonyms() const;
+    void clearSynonyms(); 
     
     void addAntonym(QString antonym);
     QStringList getAntonyms() const;
+    void clearAntonyms(); 
 };
 
 #endif // WORDDEFINITION_H

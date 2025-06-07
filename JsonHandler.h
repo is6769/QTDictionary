@@ -17,4 +17,4 @@ private:
     static WordDefinition jsonToWord(QJsonObject json);
 };
 
-#endif // JSONHANDLER_H
+#endif

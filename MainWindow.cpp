@@ -23,37 +23,29 @@ MainWindow::MainWindow(QWidget* parent)
 {
     ui->setupUi(this);
     
-    // Устанавливаем имена объектов для идентификации в таблице стилей
     setObjectName("MainWindow");
     ui->resultDisplay->setObjectName("resultDisplay");
     ui->wordListWidget->setObjectName("wordListWidget");
     ui->searchBar->setObjectName("searchBar");
     ui->searchButton->setObjectName("searchButton");
     
-    // Инициализация таймера для статусной строки
     statusClearTimer = new QTimer(this);
     statusClearTimer->setSingleShot(true);
     connect(statusClearTimer, &QTimer::timeout, this, &MainWindow::clearStatusMessage);
     
-    // Создание меню недавних файлов
     createRecentFilesMenu();
     
-    // Подключение сигналов и слотов
     connectSignals();
     
-    // Применение настроек
     appSettings->applyTheme();
     onFontChanged(appSettings->getFont());
     
     setWindowTitle("Словарное Приложение - [Не сохранено]");
     
-    // Настройка статусной строки
     ui->statusBar->showMessage("Готово");
     
-    // Настройка сочетаний клавиш
-    ui->addAction->setShortcut(QKeySequence("Ctrl+A")); // Изменено с Ctrl+N для избежания конфликта
+    ui->addAction->setShortcut(QKeySequence("Ctrl+A")); 
     
-    // Создание необходимых директорий для автосохранения
     QDir autoSaveDir(appSettings->autoSaveLocation());
     if (!autoSaveDir.exists()) {
         autoSaveDir.mkpath(".");
@@ -66,14 +58,12 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::connectSignals() {
-    // Подключение сигналов и слотов для поиска слов
     connect(ui->searchButton, &QPushButton::clicked, this, &MainWindow::searchWord);
     connect(ui->searchBar, &QLineEdit::returnPressed, this, &MainWindow::searchWord);
     connect(ui->wordListWidget, &QListWidget::itemClicked, [this](QListWidgetItem* item) {
         if (item) wordSelected(item->text());
     });
     
-    // Подключение действий меню
     connect(ui->addAction, &QAction::triggered, this, &MainWindow::addNewWord);
     connect(ui->editAction, &QAction::triggered, this, &MainWindow::editWord);
     connect(ui->deleteAction, &QAction::triggered, this, &MainWindow::deleteWord);
@@ -81,16 +71,13 @@ void MainWindow::connectSignals() {
     connect(ui->importAction, &QAction::triggered, this, &MainWindow::importDictionary);
     connect(ui->exitAction, &QAction::triggered, qApp, &QApplication::quit);
     
-    // Подключение действия настроек
     connect(ui->settingsAction, &QAction::triggered, this, &MainWindow::showSettingsDialog);
     
-    // Подключение действий файлового меню
     connect(ui->newAction, &QAction::triggered, this, &MainWindow::newDictionary);
     connect(ui->openAction, &QAction::triggered, this, &MainWindow::openDictionary);
     connect(ui->saveAction, &QAction::triggered, this, &MainWindow::saveCurrentDictionary);
     connect(ui->saveAsAction, &QAction::triggered, this, &MainWindow::saveAsDictionary);
     
-    // Подключение действия "О программе"
     connect(ui->aboutAction, &QAction::triggered, [this]() {
         QMessageBox::about(this, "О Словарном Приложении",
                           "Словарное Приложение\n\n"
@@ -103,7 +90,6 @@ void MainWindow::connectSignals() {
                           "- Функция автосохранения");
     });
     
-    // Подключение сигналов настроек
     connect(appSettings, &Settings::fontChanged, this, &MainWindow::onFontChanged);
     connect(appSettings, &Settings::autoSaveNow, this, &MainWindow::onAutoSaveNow);
 }
@@ -146,7 +132,6 @@ void MainWindow::updateWordList() {
     ui->wordListWidget->clear();
     QList<QString> words = dictionary->getAllWords();
     
-    // Сортировка слов с учетом или без учета регистра в зависимости от настроек
     if (appSettings->caseSensitiveSearch()) {
         std::sort(words.begin(), words.end());
     } else {
@@ -157,9 +142,8 @@ void MainWindow::updateWordList() {
     
     ui->wordListWidget->addItems(words);
     
-    // Обновление статусной строки с количеством слов
     ui->statusBar->showMessage(QString("Словарь содержит %1 слов").arg(dictionary->getWordCount()));
-    statusClearTimer->start(3000); // Очистить через 3 секунды
+    statusClearTimer->start(3000);
 }
 
 void MainWindow::searchWord() {
@@ -169,14 +153,11 @@ void MainWindow::searchWord() {
         return;
     }
     
-    // Поиск слова в словаре
     WordDefinition* word = dictionary->findWord(searchText);
     if (word) {
-        // Формирование HTML для отображения найденного слова
         QString result = "<h2>" + word->getWord() + "</h2>";
         result += "<p><b>Определение:</b> " + word->getDefinition() + "</p>";
         
-        // Добавление примеров, если они есть
         if (!word->getExamples().isEmpty()) {
             result += "<p><b>Примеры:</b></p><ul>";
             for (const QString& example : word->getExamples()) {
@@ -185,12 +166,10 @@ void MainWindow::searchWord() {
             result += "</ul>";
         }
         
-        // Добавление синонимов, если они есть
         if (!word->getSynonyms().isEmpty()) {
             result += "<p><b>Синонимы:</b> " + word->getSynonyms().join(", ") + "</p>";
         }
         
-        // Добавление антонимов, если они есть
         if (!word->getAntonyms().isEmpty()) {
             result += "<p><b>Антонимы:</b> " + word->getAntonyms().join(", ") + "</p>";
         }
@@ -199,7 +178,6 @@ void MainWindow::searchWord() {
         ui->statusBar->showMessage("Слово найдено");
         statusClearTimer->start(3000);
     } else {
-        // Отображение сообщения, если слово не найдено
         ui->resultDisplay->setHtml("<p>Слово <b>'" + searchText + "'</b> не найдено в словаре.</p>");
         ui->statusBar->showMessage("Слово не найдено");
         statusClearTimer->start(3000);
@@ -219,7 +197,6 @@ void MainWindow::addNewWord() {
         setModified(true);
         updateWordList();
         
-        // Автоматический поиск нового слова
         ui->searchBar->setText(newWord.getWord());
         searchWord();
         
@@ -245,17 +222,14 @@ void MainWindow::editWord() {
     if (dialog.exec() == QDialog::Accepted) {
         WordDefinition updatedWord = dialog.getWordDefinition();
         
-        // Удаление старого слова, если текст слова изменился
         if (updatedWord.getWord().toLower() != currentWord.toLower()) {
             dictionary->removeWord(currentWord);
         }
         
-        // Добавление обновленного слова
         dictionary->addWord(updatedWord.getWord(), updatedWord);
         setModified(true);
         updateWordList();
         
-        // Обновление строки поиска и результатов
         ui->searchBar->setText(updatedWord.getWord());
         searchWord();
         
@@ -306,7 +280,6 @@ void MainWindow::exportDictionary() {
     );
     
     if (!filePath.isEmpty()) {
-        // Ensure file path ends with .json extension
         if (!filePath.endsWith(".json", Qt::CaseInsensitive)) {
             filePath += ".json";
         }
@@ -366,7 +339,6 @@ void MainWindow::clearResults() {
 
 void MainWindow::closeEvent(QCloseEvent *event) {
     if (maybeSave()) {
-        // Сохранение настроек перед закрытием
         appSettings->saveSettings();
         event->accept();
     } else {
@@ -414,7 +386,6 @@ void MainWindow::setCurrentFile(const QString &filePath) {
 }
 
 bool MainWindow::saveFile(const QString &filePath) {
-    // Ensure file path ends with .json extension
     QString actualFilePath = filePath;
     if (!actualFilePath.endsWith(".json", Qt::CaseInsensitive)) {
         actualFilePath += ".json";
@@ -436,7 +407,6 @@ void MainWindow::setModified(bool modified) {
     if (dictionaryModified != modified) {
         dictionaryModified = modified;
         
-        // Обновление заголовка окна для отображения статуса изменения
         QString title = windowTitle();
         if (modified && !title.endsWith('*')) {
             setWindowTitle(title + '*');
@@ -462,7 +432,6 @@ void MainWindow::loadRecentFile(const QString &filePath) {
             QMessageBox::warning(this, "Файл не найден",
                                 QString("Файл %1 не существует").arg(filePath));
             
-            // Удаление несуществующего файла из списка недавних файлов
             appSettings->recentFiles().removeOne(filePath);
             updateRecentFilesMenu();
         }
@@ -473,40 +442,60 @@ void MainWindow::showSettingsDialog() {
     SettingsDialog dialog(appSettings, this);
     dialog.exec();
     
-    // После закрытия диалога, убедитесь, что список слов обновлен, если изменена чувствительность к регистру
     updateWordList();
 }
 
 void MainWindow::onFontChanged(const QFont &font) {
-    // Применение нового шрифта к приложению
     QApplication::setFont(font);
     
-    // Также применить к конкретным виджетам
     ui->wordListWidget->setFont(font);
     ui->resultDisplay->setFont(font);
     ui->searchBar->setFont(font);
 }
 
 void MainWindow::onAutoSaveNow() {
-    if (dictionaryModified && !currentFilePath.isEmpty()) {
-        // Автосохранение в текущий файл
-        saveFile(currentFilePath);
-    } else if (dictionaryModified) {
-        // Автосохранение в стандартное место
+    if (!dictionaryModified) {
+        return;
+    }
+
+    if (!currentFilePath.isEmpty()) {
+        if (saveFile(currentFilePath)) {
+        } else {
+        }
+    } else {
+        QDir autoSaveDir(appSettings->autoSaveLocation());
+        if (!autoSaveDir.exists()) {
+            if (!autoSaveDir.mkpath(".")) {
+                qWarning() << "Не удалось создать директорию автосохранения:" << appSettings->autoSaveLocation();
+                ui->statusBar->showMessage("Ошибка автосохранения: не удалось создать директорию.", 5000);
+                statusClearTimer->start(5000);
+                return;
+            }
+        }
+        
         QString timestamp = QDateTime::currentDateTime().toString("yyyyMMdd-hhmmss");
         QString autoSavePath = QString("%1/dictionary_autosave_%2.json")
                                   .arg(appSettings->autoSaveLocation())
                                   .arg(timestamp);
-        
-        // Here, the .json extension is already included in the path string
-        if (saveFile(autoSavePath)) {
-            ui->statusBar->showMessage(QString("Автосохранение в %1").arg(autoSavePath), 5000);
+
+        if (dictionary->exportToJson(autoSavePath)) {
+            setModified(false); 
+            ui->statusBar->showMessage(QString("Автосохранение в %1").arg(QFileInfo(autoSavePath).fileName()), 5000);
+            statusClearTimer->start(5000);
+        } else {
+            qWarning() << "Не удалось выполнить автосохранение в" << autoSavePath;
+            ui->statusBar->showMessage(QString("Ошибка автосохранения в %1").arg(QFileInfo(autoSavePath).fileName()), 5000);
+            statusClearTimer->start(5000);
         }
     }
 }
 
 void MainWindow::clearStatusMessage() {
-    ui->statusBar->showMessage("");
+    if (ui->statusBar->currentMessage().startsWith("Ошибка автосохранения:") || 
+        ui->statusBar->currentMessage().startsWith("Автосохранение в")) {
+    } else {
+        ui->statusBar->clearMessage();
+    }
 }
 
 void MainWindow::newDictionary() {
@@ -536,7 +525,6 @@ bool MainWindow::saveAsDictionary() {
     );
     
     if (!filePath.isEmpty()) {
-        // No need to add extension here since saveFile will handle it
         return saveFile(filePath);
     }
     return false;
